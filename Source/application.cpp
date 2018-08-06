@@ -38,13 +38,80 @@ void Application::pollEvents()
 	{
 		switch (event.type)
 		{
-		case (sf::Event::Closed):
-			window.close();
-			break;
+			case (sf::Event::Closed):
+			{
+				window.close();
+				break;
+			}
 
-		default:
-			break;
+			case (sf::Event::KeyPressed):
+			{
+				switch (event.key.code)
+				{
+					case sf::Keyboard::R:
+					{
+						view.reset(sf::FloatRect(0, 0, windowSize, windowSize));
+						break;
+					}
+
+					case sf::Keyboard::Space:
+					{
+						running *= -1;
+						break;
+					}
+
+					case sf::Keyboard::Escape:
+					{
+						window.close();
+					}
+
+					default:
+					{
+						break;
+					}
+				}
+			}
+
+			default:
+			{
+				break;
+			}
 		}
+	}
+}
+
+void Application::input()
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+	{
+		zoom *= 1.1;
+		view.zoom(1.1);
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+	{
+		zoom *= 0.9;
+		view.zoom(0.9);
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	{
+		view.move(0, -1 * zoom);
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	{
+		view.move(zoom, 0);
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	{
+		view.move(0, zoom);
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	{
+		view.move(-1 * zoom, 0);
 	}
 }
 

@@ -9,7 +9,11 @@
 class Application
 {
 private:
+	int running = 1;
+	float zoom = 10;
+
 	sf::RenderWindow window;
+	sf::View view;
 
 	std::vector<sf::Vertex> quads;
 
@@ -18,29 +22,39 @@ public:
 	void setQuadColour(sf::Color, int);
 
 	void pollEvents();
+	void input();
 
 	template <typename T>
-	void run(T &cellularAutomata)
+	void run(T &cellularAutomaton)
 	{
-		window.create(sf::VideoMode(windowSize, windowSize), cellularAutomata.getName() , sf::Style::Titlebar | sf::Style::Close);
+		window.create(sf::VideoMode(windowSize, windowSize), cellularAutomaton.getName() , sf::Style::Titlebar | sf::Style::Close);
 		window.setFramerateLimit(60);
+
+		view.reset(sf::FloatRect(0, 0, windowSize, windowSize));
 
 		addQuads();
 
-		cellularAutomata.init();
+		cellularAutomaton.init();
 
 		while (window.isOpen())
 		{
 			pollEvents();
 
+			input();
+
+			if (running > 0)
+			{
+				cellularAutomaton.update();
+
+				for (int i = 0; i < cellCount; i++)
+				{
+					setQuadColour(cellularAutomaton.paint(i), i);
+				}
+			}
+
 			window.clear();
 
-			cellularAutomata.update();
-
-			for (int i = 0; i < cellCount; i++)
-			{
-				setQuadColour(cellularAutomata.paint(i), i);
-			}
+			window.setView(view);
 
 			window.draw(quads.data(), quads.size(), sf::Quads);
 
