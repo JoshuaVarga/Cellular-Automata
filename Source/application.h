@@ -2,7 +2,9 @@
 #define  APPLICATION_H
 
 #include "Util/config.h"
+
 #include "Game of Life/gameoflife.h"
+#include "Brians Brain/briansbrain.h"
 
 class Application
 {
@@ -16,7 +18,35 @@ public:
 	void setQuadColour(sf::Color, int);
 
 	void pollEvents();
-	void run(GameOfLife &);
+
+	template <typename T>
+	void run(T &cellularAutomata)
+	{
+		window.create(sf::VideoMode(windowSize, windowSize), cellularAutomata.getName() , sf::Style::Titlebar | sf::Style::Close);
+		window.setFramerateLimit(60);
+
+		addQuads();
+
+		cellularAutomata.init();
+
+		while (window.isOpen())
+		{
+			pollEvents();
+
+			window.clear();
+
+			cellularAutomata.update();
+
+			for (int i = 0; i < cellCount; i++)
+			{
+				setQuadColour(cellularAutomata.paint(i), i);
+			}
+
+			window.draw(quads.data(), quads.size(), sf::Quads);
+
+			window.display();
+		}
+	}
 };
 
 #endif //APPLICATION_H

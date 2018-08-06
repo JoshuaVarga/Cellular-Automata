@@ -1,11 +1,11 @@
-#include "gameoflife.h"
+#include "briansbrain.h"
 
-std::string GameOfLife::getName()
+std::string BriansBrain::getName()
 {
 	return name;
 }
 
-void GameOfLife::init()
+void BriansBrain::init()
 {
 	int percent;
 	srandom();
@@ -14,9 +14,14 @@ void GameOfLife::init()
 	{
 		percent = random(1, 100);
 
-		if (percent > 66)
+		if (percent > 95)
 		{
 			population.push_back(on);
+		}
+
+		else if (percent > 90)
+		{
+			population.push_back(dying);
 		}
 
 		else
@@ -26,36 +31,36 @@ void GameOfLife::init()
 	}
 }
 
-void GameOfLife::update()
+void BriansBrain::update()
 {
 	std::vector<cell> new_population(cellCount);
 	int neighbours;
 
 	for (int i = 0; i < cellCount; i++)
 	{
-		neighbours = countNeighbours(i);
-
 		switch (population[i])
 		{
-		case on:
-			switch (neighbours)
-			{
-			case 2: new_population[i] = on; break;
-			case 3: new_population[i] = on; break;
-			default: new_population[i] = off; break;
-			}
-			break;
+		case off:
+			neighbours = countNeighbours(i);
 
-		default:
 			switch (neighbours)
 			{
-			case 3:
+			case 2:
 				new_population[i] = on;
 				break;
 			default:
 				new_population[i] = off;
 				break;
 			}
+
+			break;
+
+		case on:
+			new_population[i] = dying;
+			break;
+
+		default:
+			new_population[i] = off;
 			break;
 		}
 	}
@@ -63,7 +68,7 @@ void GameOfLife::update()
 	population = new_population;
 }
 
-int GameOfLife::countNeighbours(int index)
+int BriansBrain::countNeighbours(int index)
 {
 	int neighbours = 0;
 
@@ -91,11 +96,16 @@ int GameOfLife::countNeighbours(int index)
 	return neighbours;
 }
 
-sf::Color GameOfLife::paint(int index)
+sf::Color BriansBrain::paint(int index)
 {
 	sf::Color colour;
 
 	if (population[index] == on)
+	{
+		colour = sf::Color::Blue;
+	}
+
+	else if (population[index] == dying)
 	{
 		colour = sf::Color::White;
 	}

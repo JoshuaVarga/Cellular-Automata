@@ -1,18 +1,19 @@
-#ifndef  GAMEOFLIFE_H
-#define  GAMEOFLIFE_H
+#ifndef  BRIANSBRAIN_H
+#define  BRIANSBRAIN_H
 
 #include "../Util/config.h"
 #include "../Util/random.h"
 #include <windows.h>
 
-class GameOfLife
+class BriansBrain
 {
 private:
-	std::string name = "Game of Life";
+	std::string name = "Brian's Brain";
 
 	enum cell
 	{
 		on,
+		dying,
 		off
 	};
 
@@ -28,4 +29,4 @@ public:
 	sf::Color paint(int);
 };
 
-#endif //GAMEOFLIFE_H
+#endif //BRIANSBRAIN_H

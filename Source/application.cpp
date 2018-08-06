@@ -48,33 +48,3 @@ void Application::pollEvents()
 	}
 }
 
-
-void Application::run(GameOfLife &cellularAutomata)
-{
-
-	window.create(sf::VideoMode(windowSize, windowSize), "Cellular Automata", sf::Style::Titlebar | sf::Style::Close);
-	window.setFramerateLimit(60);
-
-	addQuads();
-
-	cellularAutomata.init();
-
-	while (window.isOpen())
-	{
-		pollEvents();
-
-		window.clear();
-
-		cellularAutomata.update();
-
-		for (int i = 0; i < cellCount; i++)
-		{
-			setQuadColour(cellularAutomata.paint(i), i);
-		}
-
-		window.draw(quads.data(), quads.size(), sf::Quads);
-
-		window.display();
-	}
-}
-
