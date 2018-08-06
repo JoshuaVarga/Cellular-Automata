@@ -1,7 +1,9 @@
 #ifndef  GAMEOFLIFE_H
 #define  GAMEOFLIFE_H
 
-#include "../application.h"
+#include "../Util/config.h"
+#include "../Util/random.h"
+#include <windows.h>
 
 class GameOfLife
 {
@@ -12,16 +14,14 @@ private:
 		off
 	};
 
-	std::vector<cell> data;
+	std::vector<cell> population;
 
 public:
 	void init();
-	void evolve();
-
-	void update(Application &);
-	void rePaint(Application &);
+	void update();
 
 	int countNeighbours(int);
+	sf::Color paint(int);
 };
 
 #endif //GAMEOFLIFE_H

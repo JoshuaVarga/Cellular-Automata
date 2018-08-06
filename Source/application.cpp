@@ -8,8 +8,8 @@ void Application::addQuads()
 	
 	for (int i = 0; i < cellCount; i++)
 	{
-		x = getX(i);
-		y = getY(i);
+		x = (float)cellSize * getX(i);
+		y = (float)cellSize * getY(i);
 
 		topLeft.position     = { x           , y            };
 		topRight.position    = { x + cellSize, y            };
@@ -48,10 +48,12 @@ void Application::pollEvents()
 	}
 }
 
-template <typedef T>
-void Application::run(T cellularAutomata)
+
+void Application::run(GameOfLife &cellularAutomata)
 {
+
 	window.create(sf::VideoMode(windowSize, windowSize), "Cellular Automata", sf::Style::Titlebar | sf::Style::Close);
+	window.setFramerateLimit(60);
 
 	addQuads();
 
@@ -63,7 +65,12 @@ void Application::run(T cellularAutomata)
 
 		window.clear();
 
-		cellularAutomata.update(this);
+		cellularAutomata.update();
+
+		for (int i = 0; i < cellCount; i++)
+		{
+			setQuadColour(cellularAutomata.paint(i), i);
+		}
 
 		window.draw(quads.data(), quads.size(), sf::Quads);
 

@@ -2,8 +2,7 @@
 #define  APPLICATION_H
 
 #include "Util/config.h"
-
-#include <SFML/Graphics.hpp>
+#include "Game of Life/gameoflife.h"
 
 class Application
 {
@@ -14,13 +13,10 @@ private:
 
 public:
 	void addQuads();
-
 	void setQuadColour(sf::Color, int);
 
 	void pollEvents();
-
-	template <typedef T>
-	void run(T);
+	void run(GameOfLife &);
 };
 
 #endif //APPLICATION_H

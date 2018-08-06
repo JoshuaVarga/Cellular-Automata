@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+void srandom();
 int random(int, int);
 
 #endif //RANDOM_H

@@ -1,11 +1,11 @@
 #include "config.h"
 
-float getX(int index)
+int getX(int index)
 {
-	return (float)(cellSize * (index % gridSize));
+	return index % gridSize;
 }
 
-float getY(int index)
+int getY(int index)
 {
-	return (float)(cellSize * (index / gridSize));
+	return index / gridSize;
 }

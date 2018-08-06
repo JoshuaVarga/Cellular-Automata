@@ -2,76 +2,70 @@
 
 void GameOfLife::init()
 {
+	int percent;
+	srandom();
+
 	for (int i = 0; i < cellCount; i++)
 	{
-		int percent = i;
+		percent = random(1, 100);
 
-		if (percent > 50)
+		if (percent > 66)
 		{
-			data.push_back(on);
+			population.push_back(on);
 		}
 
 		else
 		{
-			data.push_back(off);
+			population.push_back(off);
 		}
 	}
 }
 
-void GameOfLife::evolve()
+void GameOfLife::update()
 {
+	std::vector<cell> new_population(cellCount);
+	int neighbours;
+
 	for (int i = 0; i < cellCount; i++)
 	{
-		int neighbours = countNeighbours(i);
+		neighbours = countNeighbours(i);
 
-		if (data[i] == on)
+		switch (population[i])
 		{
-			if (neighbours < 2 || neighbours > 3)
+		case on:
+			switch (neighbours)
 			{
-				data[i] = off;
+			case 2: new_population[i] = on; break;
+			case 3: new_population[i] = on; break;
+			default: new_population[i] = off; break;
 			}
-		}
+			break;
 
-		else
-		{
-			if (neighbours == 3)
+		default:
+			switch (neighbours)
 			{
-				data[i] = on;
+			case 3:
+				new_population[i] = on;
+				break;
+			default:
+				new_population[i] = off;
+				break;
 			}
+			break;
 		}
 	}
-}
 
-void GameOfLife::update(Application &application)
-{
-	evolve();
-	rePaint(application);
-}
-
-void GameOfLife::rePaint(Application &application)
-{
-	for (int i = 0; i < cellCount; i++)
-	{
-		if (data[i] == on)
-		{
-			application.setQuadColour(sf::Color::White, i);
-		}
-
-		else
-		{
-			application.setQuadColour(sf::Color::Black, i);
-		}
-	}
+	population = new_population;
 }
 
 int GameOfLife::countNeighbours(int index)
 {
 	int neighbours = 0;
 
-	int x = (int)getX(index);
-	int y = (int)getY(index);
+	int x = getX(index);
+	int y = getY(index);
 
-	int north = (gridSize* ((y - 1 + gridSize) % gridSize)) + x;
+	int north = (gridSize * ((y - 1 + gridSize) % gridSize)) + x;
 	int north_east = (gridSize * ((y - 1 + gridSize) % gridSize)) + ((x + 1 + gridSize) % gridSize);
 	int east = (gridSize * y) + ((x + 1 + gridSize) % gridSize);
 	int south_east = (gridSize * ((y + 1 + gridSize) % gridSize)) + ((x + 1 + gridSize) % gridSize);
@@ -80,16 +74,33 @@ int GameOfLife::countNeighbours(int index)
 	int west = (gridSize * y) + ((x - 1 + gridSize) % gridSize);
 	int north_west = (gridSize * ((y - 1 + gridSize) % gridSize)) + ((x - 1 + gridSize) % gridSize);
 
-	if (data[north] == on)      neighbours++;
-	if (data[north_east] == on) neighbours++;
-	if (data[east] == on)       neighbours++;
-	if (data[south_east] == on) neighbours++;
-	if (data[south] == on)      neighbours++;
-	if (data[south_west] == on) neighbours++;
-	if (data[west] == on)       neighbours++;
-	if (data[north_west] == on) neighbours++;
+	if (population[north] == on)      neighbours++;
+	if (population[north_east] == on) neighbours++;
+	if (population[east] == on)       neighbours++;
+	if (population[south_east] == on) neighbours++;
+	if (population[south] == on)      neighbours++;
+	if (population[south_west] == on) neighbours++;
+	if (population[west] == on)       neighbours++;
+	if (population[north_west] == on) neighbours++;
 
 	return neighbours;
+}
+
+sf::Color GameOfLife::paint(int index)
+{
+	sf::Color colour;
+
+	if (population[index] == on)
+	{
+		colour = sf::Color::White;
+	}
+
+	else
+	{
+		colour = sf::Color::Black;
+	}
+
+	return colour;
 }
 
 
