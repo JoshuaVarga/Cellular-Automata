@@ -48,8 +48,27 @@ void Application::pollEvents()
 			{
 				switch (event.key.code)
 				{
+					case sf::Keyboard::Z:
+					{
+						if ((1 / update_step) > 2)
+						{
+							update_step += (1 / (1 / update_step - 1)) - (1 / (1 / update_step));
+						}
+						break;
+					}
+
+					case sf::Keyboard::X:
+					{
+						if ((1 / update_step) < 60)
+						{
+							update_step -= (1 / (1 / update_step)) - (1 / (1 / update_step + 1));
+						}
+						break;
+					}
+
 					case sf::Keyboard::R:
 					{
+						zoom = 10;
 						view.reset(sf::FloatRect(0, 0, windowSize, windowSize));
 						break;
 					}
@@ -101,12 +120,12 @@ void Application::input()
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		view.move(zoom, 0);
+		view.move(1 * zoom, 0);
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		view.move(0, zoom);
+		view.move(0, 1 * zoom);
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
@@ -114,4 +133,5 @@ void Application::input()
 		view.move(-1 * zoom, 0);
 	}
 }
+
 
