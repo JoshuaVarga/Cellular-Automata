@@ -21,24 +21,18 @@
     <ClCompile Include="application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game of Life\gameoflife.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Util\config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Util\random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Brians Brain\briansbrain.cpp">
+    <ClCompile Include="cellularautomata.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game of Life\gameoflife.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Util\config.h">
@@ -47,7 +41,7 @@
     <ClInclude Include="Util\random.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Brians Brain\briansbrain.h">
+    <ClInclude Include="cellularautomata.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

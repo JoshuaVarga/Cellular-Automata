@@ -1,11 +1,47 @@
-#include "gameoflife.h"
+#include "cellularautomata.h"
 
-std::string GameOfLife::getName()
+CellularAutomata::CellularAutomata(std::string rules)
+{
+	setName(rules);
+}
+
+void CellularAutomata::setName(std::string rules)
+{
+	name = rules;
+
+	bool state = true;
+
+	for (size_t i = 1; i < rules.length(); i++)
+	{
+		switch (state)
+		{
+		case true:
+		{
+			if (rules[i] == '/')
+			{
+				state = false;
+				i++;
+				break;
+			}
+
+			birth.push_back(rules[i] - '0');
+			break;
+		}
+
+		case false:
+		{
+			survival.push_back(rules[i] - '0');
+		}
+		}
+	}
+}
+
+std::string CellularAutomata::getName()
 {
 	return name;
 }
 
-void GameOfLife::init()
+void CellularAutomata::init()
 {
 	int percent;
 	srandom();
@@ -26,7 +62,7 @@ void GameOfLife::init()
 	}
 }
 
-void GameOfLife::update()
+void CellularAutomata::update()
 {
 	std::vector<cell> new_population(cellCount);
 	int neighbours;
@@ -35,35 +71,61 @@ void GameOfLife::update()
 	{
 		neighbours = countNeighbours(i);
 
+		new_population[i] = off;
+
 		switch (population[i])
 		{
-		case on:
-			switch (neighbours)
+			case on:
 			{
-			case 2: new_population[i] = on; break;
-			case 3: new_population[i] = on; break;
-			default: new_population[i] = off; break;
-			}
-			break;
+				for (size_t j = 0; j < survival.size(); j++)
+				{
+					if (neighbours == survival[j])
+					{
+						new_population[i] = on;
+					}
+				}
 
-		default:
-			switch (neighbours)
-			{
-			case 3:
-				new_population[i] = on;
-				break;
-			default:
-				new_population[i] = off;
 				break;
 			}
-			break;
+
+			default:
+			{
+				for (size_t j = 0; j < birth.size(); j++)
+				{
+					if (neighbours == birth[j])
+					{
+						new_population[i] = on;
+					}
+				}
+				break;
+			}
 		}
 	}
 
 	population = new_population;
 }
 
-int GameOfLife::countNeighbours(int index)
+void CellularAutomata::editCell(int x, int y)
+{
+	int index = getIndex(x, y);
+
+	switch (population[index])
+	{
+		case on:
+		{
+			population[index] = off;
+			break;
+		}
+
+		default:
+		{
+			population[index] = on;
+			break;
+		}
+	}
+}
+
+int CellularAutomata::countNeighbours(int index)
 {
 	int neighbours = 0;
 
@@ -91,7 +153,7 @@ int GameOfLife::countNeighbours(int index)
 	return neighbours;
 }
 
-sf::Color GameOfLife::paint(int index)
+sf::Color CellularAutomata::paint(int index)
 {
 	sf::Color colour;
 
@@ -107,5 +169,3 @@ sf::Color GameOfLife::paint(int index)
 
 	return colour;
 }
-
-
