@@ -2,17 +2,16 @@
 #define  CONFIG_H
 
 #include <iostream>
+#include <string>
+
 #include <vector>
 
 #include <SFML/Graphics.hpp>
 
-class Application;
-class GameOfLife;
-
-const int windowSize = 800;
-const int cellSize = 1;
-const int gridSize = windowSize / cellSize;
-const int cellCount = gridSize * gridSize;
+const int windowSize = 800;				  // Width/Height of the window (pixels);
+const int cellSize   = 4;					  // Width/Height of each individual cell (pixels).
+const int gridSize   = windowSize / cellSize; // The amount of cells that fit side by side into the x or y dimension of the window.
+const int cellCount  = gridSize * gridSize;   // Total amount of cells that fit into the window.
 
 int getIndex(int, int);
 

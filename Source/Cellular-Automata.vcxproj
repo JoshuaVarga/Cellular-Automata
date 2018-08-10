@@ -154,14 +154,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp" />
-    <ClCompile Include="cellularautomata.cpp" />
+    <ClCompile Include="cellularautomaton.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Util\config.cpp" />
     <ClCompile Include="Util\random.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
-    <ClInclude Include="cellularautomata.h" />
+    <ClInclude Include="cellularautomaton.h" />
     <ClInclude Include="Util\config.h" />
     <ClInclude Include="Util\random.h" />
   </ItemGroup>
