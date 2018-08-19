@@ -27,7 +27,10 @@
     <ClCompile Include="Util\random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cellularautomaton.cpp">
+    <ClCompile Include="Custom\custom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BriansBrain\briansbrain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -42,6 +45,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cellularautomaton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Custom\custom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BriansBrain\briansbrain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

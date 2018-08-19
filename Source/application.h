@@ -1,16 +1,19 @@
 /**
 	application.h
-	Purpose: TODO
+	Purpose: Handles a window.
 
 	@author Joshua Varga
-	@version 1.0
+	@version 1.1
 */
 
 #ifndef  APPLICATION_H_
 #define  APPLICATION_H_
 
+#include <memory>
+
 #include "Util/config.h"
-#include "cellularautomaton.h"
+#include "Custom/custom.h"
+#include "BriansBrain/briansbrain.h"
 
 class Application
 {
@@ -23,10 +26,19 @@ private:
 
 	std::vector<sf::Vertex> quads; // Array to store vertices for each cell.
 
+	std::unique_ptr<CellularAutomaton> cellularAutomaton;
+
 public:
 	Application() {};
 
-	CellularAutomaton cellularAutomaton;
+	/**
+		Changes the type of cellular automaton.
+	*/
+	template <typename T>
+	void init()
+	{
+		cellularAutomaton = std::make_unique<T>();
+	}
 
 	/**
 		Fills array with vertices by cell index for drawing cells.
@@ -61,7 +73,76 @@ public:
 	/**
 		Runs the application.
 	*/
-	void run();
+	template <typename T>
+	void run()
+	{
+		std::cout << "Controls:\n"
+			<< "Q/E   - Zoom\n"
+			<< "WASD  - Pan camera\n"
+			<< "R     - Reset camera\n"
+			<< "Z/X   - Change simulation speed\n"
+			<< "Space - Pause\n"
+			<< "Esc   - Exit\n"
+			<< "__________________________________________________\n\n";
+
+		init<T>();
+
+		cellularAutomaton->init();
+
+		window.create(sf::VideoMode(windowSize, windowSize),
+			cellularAutomaton->getName(), sf::Style::Titlebar | sf::Style::Close);
+		window.setFramerateLimit(60);
+		window.setKeyRepeatEnabled(false);
+
+		view.reset(sf::FloatRect(0, 0, windowSize, windowSize));
+
+		addQuads();
+
+		sf::Clock clock;
+
+		// For frame independant updating.
+		double total_time = 0;
+		double current_time = clock.getElapsedTime().asSeconds();
+		double new_time;
+		double frame_time;
+
+		while (window.isOpen())
+		{
+			new_time = clock.getElapsedTime().asSeconds();
+			frame_time = new_time - current_time;
+			current_time = new_time;
+			total_time += frame_time;
+
+			//std::cout << 1 / frame_time << "\b\b\b\b\b\b\b";
+
+			pollEvents();
+
+			input();
+
+			window.setView(view);
+
+			window.clear();
+
+			while (total_time >= update_interval)
+			{
+				if (running > 0)
+				{
+					cellularAutomaton->update();
+				}
+
+				total_time -= update_interval;
+			}
+
+			for (int i = 0; i < cellCount; i++)
+			{
+				setQuadColour(cellularAutomaton->paint(i), i);
+			}
+
+			window.draw(quads.data(), quads.size(), sf::Quads);
+
+			window.display();
+		}
+	}
 };
 
 #endif //APPLICATION_H_

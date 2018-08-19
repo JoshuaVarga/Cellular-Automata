@@ -154,14 +154,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp" />
-    <ClCompile Include="cellularautomaton.cpp" />
+    <ClCompile Include="BriansBrain\briansbrain.cpp" />
+    <ClCompile Include="Custom\custom.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Util\config.cpp" />
     <ClCompile Include="Util\random.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
+    <ClInclude Include="BriansBrain\briansbrain.h" />
     <ClInclude Include="cellularautomaton.h" />
+    <ClInclude Include="Custom\custom.h" />
     <ClInclude Include="Util\config.h" />
     <ClInclude Include="Util\random.h" />
   </ItemGroup>

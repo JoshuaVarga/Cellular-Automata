@@ -1,9 +1,9 @@
 /**
-application.cpp
-Purpose: TODO
+	application.cpp
+	Purpose: Handles a window.
 
-@author Joshua Varga
-@version 1.0
+	@author Joshua Varga
+	@version 1.0
 */
 
 #include "application.h"
@@ -47,7 +47,7 @@ void Application::setQuadColour(sf::Color colour, int index)
 // Cycles the state of a cell at specific coordinates.
 void Application::cycleCell(sf::Vector2i coordinates)
 {
-	cellularAutomaton.cycleCell(coordinates.x, coordinates.y);
+	cellularAutomaton->cycleCell(coordinates.x, coordinates.y);
 }
 
 // Checks and handles events.
@@ -90,7 +90,7 @@ void Application::pollEvents()
 					{
 						if (running < 0)
 						{
-							cellularAutomaton.update();
+							cellularAutomaton->update();
 							break;
 						}
 
@@ -131,23 +131,6 @@ void Application::pollEvents()
 						break;
 					}
 				}
-			}
-
-			// Non repeating mouse input.
-			case (sf::Event::MouseButtonPressed):
-			{
-				switch (event.mouseButton.button)
-				{
-					// Switches the state of a cell.
-					case(sf::Mouse::Left):
-					{
-						if (running < 0)
-						{
-							cycleCell(sf::Mouse::getPosition(window));
-						}
-					}
-				}
-				break;
 			}
 
 			default:
@@ -195,75 +178,6 @@ void Application::input()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
 		view.move(-1, 0);
-	}
-}
-
-// Runs the application.
-void Application::run()
-{
-	std::cout << "Controls:\n"
-		<< "Q/E   - Zoom\n"
-		<< "WASD  - Pan camera\n"
-		<< "R     - Reset camera\n"
-		<< "Z/X   - Change simulation speed\n"
-		<< "Space - Pause\n"
-		<< "Esc   - Exit\n"
-		<< "__________________________________________________\n\n";
-
-	window.create(sf::VideoMode(windowSize, windowSize), 
-		cellularAutomaton.getName(), sf::Style::Titlebar | sf::Style::Close);
-	window.setFramerateLimit(60);
-	window.setKeyRepeatEnabled(false);
-
-	view.reset(sf::FloatRect(0, 0, windowSize, windowSize));
-
-	addQuads();
-
-	cellularAutomaton.init();
-
-	sf::Clock clock;
-
-	// For frame independant updating.
-	double total_time = 0;
-	double current_time = clock.getElapsedTime().asSeconds();
-	double new_time;
-	double frame_time;
-
-	while (window.isOpen())
-	{
-		new_time = clock.getElapsedTime().asSeconds();
-		frame_time = new_time - current_time;
-		current_time = new_time;
-		total_time += frame_time;
-
-		std::cout << 1 / frame_time << "\b\b\b\b\b\b\b";
-
-		pollEvents();
-
-		input();
-
-		window.setView(view);
-
-		while (total_time >= update_interval)
-		{
-			if (running > 0)
-			{
-				cellularAutomaton.update();
-			}
-
-			total_time -= update_interval;
-		}
-
-		window.clear();
-
-		for (int i = 0; i < cellCount; i++)
-		{
-			setQuadColour(cellularAutomaton.paint(i), i);
-		}
-
-		window.draw(quads.data(), quads.size(), sf::Quads);
-
-		window.display();
 	}
 }
 
