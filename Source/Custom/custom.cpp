@@ -58,24 +58,19 @@ std::string Custom::getName()
 // Also prompts user for rules.
 void Custom::init()
 {
-	int percent;
-	srandom();
+	information.resize(2);
 
 	// Loop through cells and set them to on or off randomly.
 	for (int i = 0; i < cellCount; i++)
 	{
-		percent = random(1, 100);
-
-		if (percent > 69)
-		{
-			population.push_back(on);
-		}
-
-		else
-		{
-			population.push_back(off);
-		}
+		population.push_back(off);
 	}
+
+	information[0].title = "Population";
+	information[0].value = std::to_string(populationSize);
+
+	information[1].title = "Generation";
+	information[1].value = std::to_string(generation);
 
 	std::string rules;
 
@@ -91,6 +86,7 @@ void Custom::update()
 {
 	// Next generation.
 	std::vector<cell> new_population(cellCount);
+	generation++;
 
 	int neighbours;
 
@@ -135,6 +131,9 @@ void Custom::update()
 	}
 
 	population = new_population;
+
+	information[0].value = std::to_string(populationSize);
+	information[1].value = std::to_string(generation);
 }
 
 // Cycles the state of a cell at specific coordinates.
@@ -147,15 +146,20 @@ void Custom::cycleCell(int x, int y)
 		case on:
 		{
 			population[index] = off;
+			populationSize--;
 			break;
 		}
 
 		default:
 		{
 			population[index] = on;
+			populationSize++;
 			break;
 		}
 	}
+
+	information[0].value = std::to_string(populationSize);
+	information[1].value = std::to_string(generation);
 }
 
 // Counts the neighbours in the Moore neighbourhood. 

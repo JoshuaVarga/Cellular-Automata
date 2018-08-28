@@ -168,6 +168,9 @@
     <ClInclude Include="Util\config.h" />
     <ClInclude Include="Util\random.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="..\..\..\..\Desktop\arial.ttf" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

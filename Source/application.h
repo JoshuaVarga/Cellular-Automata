@@ -3,7 +3,7 @@
 	Purpose: Handles a window.
 
 	@author Joshua Varga
-	@version 1.1
+	@version 2.0
 */
 
 #ifndef  APPLICATION_H_
@@ -21,6 +21,9 @@ private:
 	int running = 1; // Is the game updating? running > 0 = true, running < 0 = false.
 	double update_interval = 0.1; // Time in seconds between game updates.
 
+	sf::Font font;
+	std::vector<sf::Text> texts;
+
 	sf::RenderWindow window;
 	sf::View view;
 
@@ -32,13 +35,24 @@ public:
 	Application() {};
 
 	/**
-		Changes the type of cellular automaton.
+		Changes the type of cellular automaton and initializes it.
 	*/
 	template <typename T>
 	void init()
 	{
 		cellularAutomaton = std::make_unique<T>();
+		cellularAutomaton->init();
 	}
+
+	/**
+		Initializes the GUI.
+	*/
+	void initGUI();
+
+	/**
+		Updates the GUI.
+	*/
+	void updateGUI();
 
 	/**
 		Fills array with vertices by cell index for drawing cells.
@@ -58,7 +72,7 @@ public:
 
 		@param coordinates x,y coordinates of the mouse.
 	*/
-	void cycleCell(sf::Vector2i coordinates);
+	void cycleCell(sf::Vector2f coordinates);
 
 	/**
 		Checks and handles events.
@@ -85,13 +99,13 @@ public:
 			<< "Esc   - Exit\n"
 			<< "__________________________________________________\n\n";
 
-		init<T>();
-
-		cellularAutomaton->init();
+		init<T>();	
+		initGUI();
 
 		window.create(sf::VideoMode(windowSize, windowSize),
 			cellularAutomaton->getName(), sf::Style::Titlebar | sf::Style::Close);
 		window.setFramerateLimit(60);
+		window.setVerticalSyncEnabled(false);
 		window.setKeyRepeatEnabled(false);
 
 		view.reset(sf::FloatRect(0, 0, windowSize, windowSize));
@@ -119,8 +133,6 @@ public:
 
 			input();
 
-			window.setView(view);
-
 			window.clear();
 
 			while (total_time >= update_interval)
@@ -133,12 +145,23 @@ public:
 				total_time -= update_interval;
 			}
 
+			updateGUI();
+
 			for (int i = 0; i < cellCount; i++)
 			{
 				setQuadColour(cellularAutomaton->paint(i), i);
 			}
 
+			window.setView(view);
+
 			window.draw(quads.data(), quads.size(), sf::Quads);
+			
+			window.setView(window.getDefaultView());
+				
+			for (int i = 0; i < texts.size(); i++)
+			{
+				window.draw(texts[i]);
+			}
 
 			window.display();
 		}

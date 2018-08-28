@@ -15,6 +15,8 @@ class Custom : public CellularAutomaton
 {
 private:
 	std::string name;
+	int populationSize = 0;
+	int generation = 0;
 
 	std::vector<int> birth;    // Stores neighbours needed for cell birth.
 	std::vector<int> survival; // Stores neighbours needed for cell survival.

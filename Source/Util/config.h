@@ -8,8 +8,8 @@
 
 #include <SFML/Graphics.hpp>
 
-const int windowSize = 800;				  // Width/Height of the window (pixels);
-const int cellSize   = 4;					  // Width/Height of each individual cell (pixels).
+const int windowSize = 800;				      // Width/Height of the window (pixels);
+const int cellSize   = 1;					  // Width/Height of each individual cell (pixels).
 const int gridSize   = windowSize / cellSize; // The amount of cells that fit side by side into the x or y dimension of the window.
 const int cellCount  = gridSize * gridSize;   // Total amount of cells that fit into the window.
 

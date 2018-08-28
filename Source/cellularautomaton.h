@@ -3,7 +3,7 @@ cellularautomaton.h
 Purpose: Parent class for all cellular automata.
 
 @author Joshua Varga
-@version 1.0
+@version 2.0
 */
 
 #ifndef  CELLULARAUTOMATON_H_
@@ -17,11 +17,21 @@ class CellularAutomaton
 public:
 	CellularAutomaton(){};
 
+	struct info
+	{
+		std::string title;
+		std::string value;
+	};
+
+	std::vector<info> information;
+
 	// Overridden in child classes.
 	virtual void setName(std::string name) {};
 	virtual std::string getName() { return NULL;};
 	virtual void init() {};
 	virtual void update() {};
+	virtual void initInfo() {};
+	virtual void updateInfo() {};
 	virtual void cycleCell(int x, int y) {};
 	virtual int countNeighbours(int index) { return NULL; };
 	virtual sf::Color paint(int index) { return (sf::Color)NULL; };

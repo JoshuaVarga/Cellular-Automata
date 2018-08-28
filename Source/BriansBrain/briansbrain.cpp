@@ -3,7 +3,7 @@ briansbrain.cpp
 Purpose: Implement Brian's Brain cellular automaton.
 
 @author Joshua Varga
-@version 1.0
+@version 2.0
 */
 
 #include "briansbrain.h"
@@ -20,31 +20,13 @@ std::string BriansBrain::getName()
 	return name;
 }
 
-// Generates random states states for the first generation of cells.
+// Generates random states states for the first generation of cells and initializes information..
 void BriansBrain::init()
 {
-	int percent;
-	srandom();
-
-	// Loop through cells and set them to on or off randomly.
 	for (int i = 0; i < cellCount; i++)
 	{
-		percent = random(1, 100);
-
-		if (percent > 75)
-		{
-			population.push_back(on);
-		}
-
-		else if (percent > 50)
-		{
-			population.push_back(dying);
-		}
-
-		else
-		{
-			population.push_back(off);
-		}
+		// All cells begin off.
+		population.get()->push_back(off);
 	}
 }
 
@@ -52,42 +34,44 @@ void BriansBrain::init()
 void BriansBrain::update()
 {
 	// Next generation.
-	std::vector<cell> new_population(cellCount);
-
+	generation++;
+	
 	int neighbours;
 
 	// Loop through all cells and change their state in the next generation based on neighbours.
 	for (int i = 0; i < cellCount; i++)
 	{
-		switch (population[i])
+		switch (population.get()->at(i))
 		{
 			case on:
 			{
-				new_population[i] = dying;
+				new_population.get()->at(i) = dying;
 				break;
 			}
 
 			case dying:
 			{
-				new_population[i] = off;
+				new_population.get()->at(i) = off;
+				populationSize--;
 				break;
 			}
 
 			default:
-			{
+			{			
 				neighbours = countNeighbours(i);
 
 				switch (neighbours)
 				{
 					case 2:
 					{
-						new_population[i] = on;
+						new_population.get()->at(i) = on;
+						populationSize++;
 						break;
 					}
 
 					default:
 					{
-						new_population[i] = off;
+						new_population.get()->at(i) = off;
 						break;
 					}
 				}
@@ -95,37 +79,63 @@ void BriansBrain::update()
 		}
 	}
 
-	population = new_population;
+	population.swap(new_population);
+}
+
+// Initializes information about the automaton.
+void BriansBrain::initInfo()
+{
+	// Resize to the amount of info.
+	information.resize(2);
+
+	// Set the title of the info.
+	information[0].title = "Population";
+	information[1].title = "Generation";
+}
+
+// Updates automaton information.
+void BriansBrain::updateInfo()
+{
+	information[0].value = std::to_string(populationSize);
+	information[1].value = std::to_string(generation);
 }
 
 // Cycles the state of a cell at specific coordinates.
 void BriansBrain::cycleCell(int x, int y)
 {
-	int index = getIndex(x, y);
-
-	switch (population[index])
+	if (x < 0 || x > windowSize)
 	{
-	case on:
-	{
-		population[index] = dying;
-		break;
+		return;
 	}
 
-	case dying:
-	{
-		population[index] = off;
-		break;
-	}
+	int index = getIndex(x / cellSize, y / cellSize);
 
-	default:
+	switch (population.get()->at(index))
 	{
-		population[index] = on;
-		break;
-	}
+		case on:
+		{
+			population.get()->at(index) = dying;
+			break;
+		}
+
+		case dying:
+		{
+			population.get()->at(index) = off;
+			populationSize--;
+			break;
+		}
+
+		case off:
+		{
+			population.get()->at(index) = on;
+			populationSize++;
+			break;
+		}
 	}
 }
 
 // Counts the neighbours in the Moore neighbourhood. 
+// TODO: Increase performance.
 int BriansBrain::countNeighbours(int index)
 {
 	int neighbours = 0;
@@ -159,14 +169,14 @@ int BriansBrain::countNeighbours(int index)
 	int north_west = (gridSize * ((y - 1 + gridSize) % gridSize)) +
 		((x - 1 + gridSize) % gridSize);
 
-	if (population[north] == on)      neighbours++;
-	if (population[north_east] == on) neighbours++;
-	if (population[east] == on)       neighbours++;
-	if (population[south_east] == on) neighbours++;
-	if (population[south] == on)      neighbours++;
-	if (population[south_west] == on) neighbours++;
-	if (population[west] == on)       neighbours++;
-	if (population[north_west] == on) neighbours++;
+	if (population.get()->at(north) == on)      neighbours++;
+	if (population.get()->at(north_east) == on) neighbours++;
+	if (population.get()->at(east) == on)       neighbours++;
+	if (population.get()->at(south_east) == on) neighbours++;
+	if (population.get()->at(south) == on)      neighbours++;
+	if (population.get()->at(south_west) == on) neighbours++;
+	if (population.get()->at(west) == on)       neighbours++;
+	if (population.get()->at(north_west) == on) neighbours++;
 
 	return neighbours;
 }
@@ -174,28 +184,21 @@ int BriansBrain::countNeighbours(int index)
 // Sets the colour of a cell specified by index.
 sf::Color BriansBrain::paint(int index)
 {
-	sf::Color colour;
-
-	switch (population[index])
+	switch (population.get()->at(index))
 	{
 		case on:
 		{
-			colour = sf::Color::Blue;
-			break;
+			return sf::Color::Blue;
 		}
 
 		case dying:
 		{
-			colour = sf::Color::White;
-			break;
+			return sf::Color::White;
 		}
 
 		default:
 		{
-			colour = sf::Color::Black;
-			break;
+			return sf::Color::Black;
 		}
 	}
-
-	return colour;
 }

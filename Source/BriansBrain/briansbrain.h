@@ -3,7 +3,7 @@ briansbrain.h
 Purpose: Implement Brian's Brain cellular automaton.
 
 @author Joshua Varga
-@version 1.0
+@version 2.0
 */
 
 #ifndef  BRIANSBRAIN_H_
@@ -15,6 +15,8 @@ class BriansBrain : public CellularAutomaton
 {
 private:
 	std::string name = "Brian's Brain";
+	int populationSize = 0;
+	int generation = 0;
 
 	enum cell
 	{
@@ -23,7 +25,8 @@ private:
 		off
 	};
 
-	std::vector<cell> population;
+	std::unique_ptr<std::vector<cell>> population = std::make_unique<std::vector<cell>>();
+	std::unique_ptr<std::vector<cell>> new_population = std::make_unique<std::vector<cell>>(cellCount);
 
 public:
 	/**
@@ -49,6 +52,16 @@ public:
 		Replaces the current population with the next generation of cells.
 	*/
 	void update() override;
+
+	/**
+		Initializes information about the automaton.
+	*/
+	void initInfo() override;
+
+	/**
+		Updates automaton information.
+	*/
+	void updateInfo() override;
 
 	/**
 		Cycles the state of a cell at specific coordinates.

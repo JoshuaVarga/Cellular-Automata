@@ -3,12 +3,45 @@
 	Purpose: Handles a window.
 
 	@author Joshua Varga
-	@version 1.0
+	@version 2.0
 */
 
 #include "application.h"
 
-// Fills array with vertices by cell index for drawing cells.
+// Initializes the GUI.
+void Application::initGUI()
+{
+	font.loadFromFile("arial.ttf");
+
+	cellularAutomaton.get()->initInfo();
+
+	int size = cellularAutomaton->information.size();
+
+	for (int i = 0; i < size; i++)
+	{
+		sf::Text text("Test", font, 32);
+		text.setFillColor(sf::Color::White);
+		text.setOutlineColor(sf::Color::Black);
+		text.setOutlineThickness(1);
+		text.setPosition(0, i * 32);
+
+		texts.push_back(text);
+	}
+}
+
+// Updates the GUI.
+void Application::updateGUI()
+{
+	cellularAutomaton.get()->updateInfo();
+
+	for (int i = 0; i < (int)texts.size(); i++)
+	{
+		std::string str = cellularAutomaton->information[i].title + ": " + cellularAutomaton->information[i].value;
+		texts[i].setString(str);
+	}
+}
+
+	// Fills array with vertices by cell index for drawing cells.
 void Application::addQuads()
 {
 	// Coordinates
@@ -45,7 +78,7 @@ void Application::setQuadColour(sf::Color colour, int index)
 }
 
 // Cycles the state of a cell at specific coordinates.
-void Application::cycleCell(sf::Vector2i coordinates)
+void Application::cycleCell(sf::Vector2f coordinates)
 {
 	cellularAutomaton->cycleCell(coordinates.x, coordinates.y);
 }
@@ -129,6 +162,26 @@ void Application::pollEvents()
 					default:
 					{
 						break;
+					}
+				}
+			}
+
+			// Non repeating mouse input,
+			case (sf::Event::MouseButtonPressed):
+			{
+				switch (event.mouseButton.button)
+				{
+					// Cycle cell at mouse position.
+					case (sf::Mouse::Left):
+					{
+						int x = sf::Mouse::getPosition(window).x;
+						int y = sf::Mouse::getPosition(window).y;
+
+						// Map pixel to world coords.
+						sf::Vector2i pixelPos(x, y);
+						sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos, view);
+
+						cycleCell(worldPos);
 					}
 				}
 			}
