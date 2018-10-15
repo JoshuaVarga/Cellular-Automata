@@ -23,7 +23,7 @@ void Application::initGUI()
 		text.setFillColor(sf::Color::White);
 		text.setOutlineColor(sf::Color::Black);
 		text.setOutlineThickness(1);
-		text.setPosition(0, i * 32);
+		text.setPosition(float(0), float(i * 32));
 
 		texts.push_back(text);
 	}
@@ -80,7 +80,7 @@ void Application::setQuadColour(sf::Color colour, int index)
 // Cycles the state of a cell at specific coordinates.
 void Application::cycleCell(sf::Vector2f coordinates)
 {
-	cellularAutomaton->cycleCell(coordinates.x, coordinates.y);
+	cellularAutomaton->cycleCell(int(coordinates.x), int(coordinates.y));
 }
 
 // Checks and handles events.
@@ -157,6 +157,7 @@ void Application::pollEvents()
 					case sf::Keyboard::Escape:
 					{
 						window.close();
+						break;
 					}
 
 					default:
@@ -164,6 +165,8 @@ void Application::pollEvents()
 						break;
 					}
 				}
+
+				break;
 			}
 
 			// Non repeating mouse input,
@@ -184,6 +187,8 @@ void Application::pollEvents()
 						cycleCell(worldPos);
 					}
 				}
+
+				break;
 			}
 
 			default:

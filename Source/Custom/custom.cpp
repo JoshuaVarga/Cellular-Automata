@@ -60,7 +60,7 @@ void Custom::init()
 {
 	information.resize(2);
 
-	// Loop through cells and set them to on or off randomly.
+	// Loop through cells and set them to off.
 	for (int i = 0; i < cellCount; i++)
 	{
 		population.push_back(off);
@@ -90,6 +90,8 @@ void Custom::update()
 
 	int neighbours;
 
+	populationSize = 0;
+
 	// Loop through all cells and change their state in the next generation based on neighbours.
 	for (int i = 0; i < cellCount; i++)
 	{
@@ -108,6 +110,7 @@ void Custom::update()
 					if (neighbours == survival[j])
 					{
 						new_population[i] = on;
+						populationSize++;
 					}
 				}
 
@@ -123,8 +126,10 @@ void Custom::update()
 					if (neighbours == birth[j])
 					{
 						new_population[i] = on;
+						populationSize++;
 					}
 				}
+
 				break;
 			}
 		}

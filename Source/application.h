@@ -91,12 +91,13 @@ public:
 	void run()
 	{
 		std::cout << "Controls:\n"
-			<< "Q/E   - Zoom\n"
-			<< "WASD  - Pan camera\n"
-			<< "R     - Reset camera\n"
-			<< "Z/X   - Change simulation speed\n"
-			<< "Space - Pause\n"
-			<< "Esc   - Exit\n"
+			<< "Q/E		   - Zoom\n"
+			<< "WASD	   - Pan camera\n"
+			<< "R		   - Reset camera\n"
+			<< "Z/X		   - Change simulation speed\n"
+			<< "Mouse Left - Cycle cell state\n"
+			<< "Space	   - Pause\n"
+			<< "Esc		   - Exit\n"
 			<< "__________________________________________________\n\n";
 
 		init<T>();	
@@ -158,7 +159,7 @@ public:
 			
 			window.setView(window.getDefaultView());
 				
-			for (int i = 0; i < texts.size(); i++)
+			for (int i = 0; i < signed(texts.size()); i++)
 			{
 				window.draw(texts[i]);
 			}
