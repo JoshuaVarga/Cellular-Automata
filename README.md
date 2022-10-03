@@ -6,13 +6,13 @@ See [https://en.wikipedia.org/wiki/Cellular_automaton](https://en.wikipedia.org/
 ![image](https://user-images.githubusercontent.com/8739373/193666823-0a87eb6a-c342-4f62-823a-c66d25a18815.png)
 
 ## Controls
-Q/E: Zoom in/out
-WASD: Pan Camera
-R: Reset Camera
-Z/X: Change simulation speed
-Mouse Left: Cycle cell state
-Space: Pause
-ESC: Close game
+Q/E: Zoom in/out  
+WASD: Pan Camera  
+R: Reset Camera  
+Z/X: Change simulation speed  
+Mouse Left: Cycle cell state  
+Space: Pause  
+ESC: Close game  
 
 ## Compiling
 You Need:
