@@ -2,12 +2,22 @@
 A C++/SFML project for simulating 2D square-based cellular automata.
 See [https://en.wikipedia.org/wiki/Cellular_automaton](https://en.wikipedia.org/wiki/Cellular_automaton) for more information on cellular automata.
 
-## Installation
-This project requires [SFML 2.5.0](https://www.sfml-dev.org/download.php) and a C++17 compatible compiler.
+# Pictures
+![image](https://user-images.githubusercontent.com/8739373/193666823-0a87eb6a-c342-4f62-823a-c66d25a18815.png)
 
-## Versioning 
-This project is versioned using [SemVer](http://semver.org/).
-For the versions available, see [releases](https://github.com/JoshuaVarga/Cellular-Automata/releases).
+## Controls
+Q/E: Zoom in/out
+WASD: Pan Camera
+R: Reset Camera
+Z/X: Change simulation speed
+Mouse Left: Cycle cell state
+Space: Pause
+ESC: Close game
 
-## License
-This project is licensed under the GNU Affero General Public License v3.0. For details check out the [LICENSE.txt](https://github.com/JoshuaVarga/Cellular-Automata/blob/master/LICENSE.md).
+## Compiling
+You Need:
+- SFML 2.5+
+- C++17 compliant compiler
+- CMake build system
+
+run CMake on the project directory with CMAKE_BUILD_TYPE=Release and you'll get Makefile or equivalent for your platform, with which you can compile the game.
