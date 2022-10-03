@@ -26,7 +26,7 @@ void BriansBrain::init()
 	for (int i = 0; i < cellCount; i++)
 	{
 		// All cells begin off.
-		population.get()->push_back(off);
+		population.push_back(off);
 	}
 }
 
@@ -41,17 +41,17 @@ void BriansBrain::update()
 	// Loop through all cells and change their state in the next generation based on neighbours.
 	for (int i = 0; i < cellCount; i++)
 	{
-		switch (population.get()->at(i))
+		switch (population.at(i))
 		{
 			case on:
 			{
-				new_population.get()->at(i) = dying;
+				new_population.at(i) = dying;
 				break;
 			}
 
 			case dying:
 			{
-				new_population.get()->at(i) = off;
+				new_population.at(i) = off;
 				populationSize--;
 				break;
 			}
@@ -64,14 +64,14 @@ void BriansBrain::update()
 				{
 					case 2:
 					{
-						new_population.get()->at(i) = on;
+						new_population.at(i) = on;
 						populationSize++;
 						break;
 					}
 
 					default:
 					{
-						new_population.get()->at(i) = off;
+						new_population.at(i) = off;
 						break;
 					}
 				}
@@ -110,24 +110,24 @@ void BriansBrain::cycleCell(int x, int y)
 
 	int index = getIndex(x / cellSize, y / cellSize);
 
-	switch (population.get()->at(index))
+	switch (population.at(index))
 	{
 		case on:
 		{
-			population.get()->at(index) = dying;
+			population.at(index) = dying;
 			break;
 		}
 
 		case dying:
 		{
-			population.get()->at(index) = off;
+			population.at(index) = off;
 			populationSize--;
 			break;
 		}
 
 		case off:
 		{
-			population.get()->at(index) = on;
+			population.at(index) = on;
 			populationSize++;
 			break;
 		}
@@ -169,14 +169,14 @@ int BriansBrain::countNeighbours(int index)
 	int north_west = (gridSize * ((y - 1 + gridSize) % gridSize)) +
 		((x - 1 + gridSize) % gridSize);
 
-	if (population.get()->at(north) == on)      neighbours++;
-	if (population.get()->at(north_east) == on) neighbours++;
-	if (population.get()->at(east) == on)       neighbours++;
-	if (population.get()->at(south_east) == on) neighbours++;
-	if (population.get()->at(south) == on)      neighbours++;
-	if (population.get()->at(south_west) == on) neighbours++;
-	if (population.get()->at(west) == on)       neighbours++;
-	if (population.get()->at(north_west) == on) neighbours++;
+	if (population.at(north) == on)      neighbours++;
+	if (population.at(north_east) == on) neighbours++;
+	if (population.at(east) == on)       neighbours++;
+	if (population.at(south_east) == on) neighbours++;
+	if (population.at(south) == on)      neighbours++;
+	if (population.at(south_west) == on) neighbours++;
+	if (population.at(west) == on)       neighbours++;
+	if (population.at(north_west) == on) neighbours++;
 
 	return neighbours;
 }
@@ -184,7 +184,7 @@ int BriansBrain::countNeighbours(int index)
 // Sets the colour of a cell specified by index.
 sf::Color BriansBrain::paint(int index)
 {
-	switch (population.get()->at(index))
+	switch (population.at(index))
 	{
 		case on:
 		{

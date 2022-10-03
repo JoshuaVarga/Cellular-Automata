@@ -25,8 +25,8 @@ private:
 		off
 	};
 
-	std::unique_ptr<std::vector<cell>> population = std::make_unique<std::vector<cell>>();
-	std::unique_ptr<std::vector<cell>> new_population = std::make_unique<std::vector<cell>>(cellCount);
+	std::vector<cell> population;
+	std::vector<cell> new_population;
 
 public:
 	/**
@@ -86,4 +86,4 @@ public:
 	sf::Color paint(int index) override;
 };
 
-#endif BRIANSBRAIN_H_
+#endif //BRIANSBRAIN_H_
